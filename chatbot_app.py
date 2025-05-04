@@ -124,17 +124,18 @@ with tabs[0]:
         st.session_state.chat_history = []
     if "chat_input" not in st.session_state:
         st.session_state.chat_input = ""
+    if "chat_feedback" not in st.session_state:
+        st.session_state.chat_feedback = []
 
-    # Theme selector
     selected_theme = st.selectbox("Choose a theme", list(THEME_CONFIGS.keys()), key="chat_theme")
 
-    # Clear chat history when theme changes
+    # Clear chat if theme changes
     if selected_theme != st.session_state.previous_theme:
         st.session_state.chat_history = []
         st.session_state.chat_input = ""
+        st.session_state.chat_feedback = []
         st.session_state.previous_theme = selected_theme
 
-    # Define chat handler
     def handle_input():
         user_query = st.session_state.chat_input.strip()
         if not user_query:
@@ -151,17 +152,32 @@ with tabs[0]:
             answer = response.choices[0].message.content.strip()
             st.session_state.chat_history.append(("user", user_query))
             st.session_state.chat_history.append(("assistant", answer))
+            st.session_state.chat_feedback.append(None)  # Placeholder for feedback
         except Exception as e:
-            st.session_state.chat_history.append(("assistant", f"Error: {e}"))
+            error_msg = f"Error: {e}"
+            st.session_state.chat_history.append(("assistant", error_msg))
+            st.session_state.chat_feedback.append(None)
         st.session_state.chat_input = ""
 
-    # Chat history display
+    # Display chat
     with st.container():
-        for role, msg in st.session_state.chat_history:
+        for i, (role, msg) in enumerate(st.session_state.chat_history):
             icon = "🔹" if role == "user" else "🤖"
-            st.markdown(f"**{icon} {role.capitalize()}:** {msg}")
+            if role == "assistant":
+                st.markdown(f"**{icon} Assistant:**")
+                st.code(msg, language="text")
+                feedback = st.radio(
+                    "Was this response helpful?",
+                    ["👍 Yes", "👎 No", "No Feedback"],
+                    index=2,
+                    key=f"feedback_{i}",
+                    horizontal=True,
+                    label_visibility="collapsed"
+                )
+                st.session_state.chat_feedback[i // 2] = feedback if feedback != "No Feedback" else None
+            else:
+                st.markdown(f"**{icon} User:** {msg}")
 
-    # Input field with Enter key trigger
     st.text_input("Type your question and press Enter", key="chat_input", on_change=handle_input)
 
 # --- TAB 2: VISUALS ---
