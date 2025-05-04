@@ -8,3 +8,4 @@ sentence-transformers
 hdbscan
 umap-learn
 gensim
+plotly==5.21.0
