@@ -1,0 +1,16 @@
+Below are four main areas of UN-supported digital initiatives in Africa for 2024, each with a thematic label and concise illustration, followed by key challenges/gaps:
+
+1. Digital Economy & Financial Inclusion (Theme: Economic Empowerment)  
+   - Illustration: Initiatives focus on expanding alternative digital lending infrastructure and ensuring affordable devices so that youth, women, and marginalized communities can access online business tools, credit, and markets. Programmes also promote digital marketplaces and improve regulatory environments to encourage private-sector innovation.
+
+2. Digital Education & Skills (Theme: Education Access)  
+   - Illustration: Projects include digitizing school curriculums (radio, TV, and internet) and creating learning platforms (e.g., NetXtudo, startup lab incubators) to improve youth digital literacy and ensure that out-of-school adolescents and women benefit from vocational and community-based digital training programmes.
+
+3. Digital Health Systems (Theme: Health Systems)  
+   - Illustration: Efforts involve modernizing health information systems, scaling up proven maternal and child health (RMNCAH) digital interventions, and integrating data and digital transformation strategies to strengthen basic healthcare delivery, monitoring, and innovation.
+
+4. Digital Governance & Public Services (Theme: Governance & Public Sector Support)  
+   - Illustration: E-justice and e-visa systems, digital policy assessments, and digital feedback mechanisms for spatial planning are being implemented to enhance transparency, streamline government services, and foster inclusive participation in areas like urban planning and anti-corruption efforts.
+
+Key Challenges/Gaps:  
+Despite these advances, many rural and marginalized populations still face connectivity limitations, unaffordable devices, and low digital literacy. Policy and regulatory frameworks often lag behind technological innovation, slowing adoption and scalability. Ensuring data privacy, cybersecurity, and equitable inclusion (particularly for women and youth) remains a critical concern.
