@@ -110,7 +110,7 @@ client = AzureOpenAI(
 # ========== STREAMLIT APP ==========
 
 st.set_page_config(page_title="UN INFO Chatbot", layout="wide")
-st.title("🌍 UN INFO 2024 – Thematic Assistant")
+st.title("🇺🇳 United Nations Joint WorkPlans – Thematic Data Assistant")
 
 tabs = st.tabs(["💬 Chatbot", "📊 Visual Insights", "📘 About"])
 
@@ -162,7 +162,7 @@ with tabs[0]:
     # Display chat
     with st.container():
         for i, (role, msg) in enumerate(st.session_state.chat_history):
-            icon = "🔹" if role == "user" else "🤖"
+            icon = "🇺🇳" if role == "user" else "🤖"
             if role == "assistant":
                 st.markdown(f"**{icon} Assistant:**")
                 st.code(msg, language="text")
@@ -197,13 +197,47 @@ with tabs[1]:
 # --- TAB 3: ABOUT ---
 with tabs[2]:
     st.header("📘 About This App")
+    
     st.markdown("""
-    This tool was built to explore and explain funding data from UN INFO 2024 across African regions.
+### Our Mission
+This assistant supports evidence-based decision-making by making UN INFO 2024 programming data in Africa accessible and actionable.  
+It enables policy experts, UN staff, and researchers to interact with data-driven insights from Cooporation Framework  Joint Workplans (JWPs), using an AI-powered chatbot and visualizations.
 
-    - Ask questions using an LLM-based chatbot
-    - View data-driven visuals of required funding by country
-    - Based on real UN sub-output and pivot table data
+---
 
-    **Created by:** Zichen Zhao (ziche.zhao@un.org)
-    **Powered by:** Streamlit + Azure OpenAI + Plotly
-    """)
+### Background
+This tool was developed in preparation for the DCO ASG Africa Retreat (May 2025) to:
+- Analyze sub-output level programming data from 49+ UN Country Teams (UNCTs)
+- Cover six thematic areas: **Youth**, **Education**, **Digital**, **Mining**, **Education in Crisis**, and **IFF & Transnational Crime**
+- Leverage UN INFO datasets uploaded and validated by UNCTs as of April 2025
+
+The data comes from publicly available **Cooperation Framework (CF) JWPs** across Africa and includes both English and French content.
+
+---
+
+### How It Works
+The assistant runs on **Azure AI Foundry**, using enterprise-secure large language models (OpenAI o1) within UN infrastructure. The process includes:
+
+1. **Pre-processing:** Clean and structure open-ended programming data
+2. **Prompt Engineering:** Apply thematic LLM prompts to extract insights
+3. **Output Generation:** Summarize themes, challenges, and country examples
+4. **Validation:** Reviewed with Microsoft Co-Pilot and cross-checked with experts
+
+All model interactions happen within a **private, role-secured environment**, ensuring compliance with UN cybersecurity and data privacy policies.
+
+---
+
+### What You Can Do
+- **Ask questions** via the chatbot on UN programming priorities, funding gaps, or thematic support
+- **View funding visualizations** by country and theme
+- **Explore outputs** from real programming data aligned with UNCT reporting
+
+---
+
+### Contact Us
+**Developer:** Zichen Zhao (Jackson)
+**Email:** ziche.zhao@un.org  
+**Organization:** UN Development Coordination Office (UNDCO)
+
+---
+""")
