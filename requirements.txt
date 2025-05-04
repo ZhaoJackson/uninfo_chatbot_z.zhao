@@ -9,4 +9,5 @@ umap-learn
 gensim
 openai>=1.0.0
 streamlit
-watchdog
+watchdogplotly
+plotly==5.21.0
