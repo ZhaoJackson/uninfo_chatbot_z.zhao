@@ -14,28 +14,28 @@ AZURE_OPENAI_API_VERSION = st.secrets["AZURE_OPENAI_API_VERSION"]
 AZURE_OPENAI_DEPLOYMENT = st.secrets["AZURE_OPENAI_DEPLOYMENT"]
 
 # Analyzer Output directory
-O1_OUTPUT_DIR = "src/outputs/4o_outputs"
+GPT_OUTPUT_DIR_Africa = "src/outputs/4o_outputs/Africa_Outputs"
 
 # Theme file configuration
 THEME_CONFIGS = {
     "Youth": {
-        "file": "src/data/Youth - jeunesse.xlsx",
+        "file": "src/data/Africa/Youth - jeunesse.xlsx",
         "sheets": ["Youth - Pivot Table", "Youth - SubOutputs"]
     },
     "Digital": {
-        "file": "src/data/Digital - numérique.xlsx",
+        "file": "src/data/Africa/Digital - numérique.xlsx",
         "sheets": ["Digital - Pivot Table", "Digital - SubOutputs"]
     },
     "Education": {
-        "file": "src/data/Education - éducation.xlsx",
-        "sheets": ["Education - Pivote Table", "Education - SubOutputs"]
+        "file": "src/data/Africa/Education - éducation.xlsx",
+        "sheets": ["Education - Pivot Table", "Education - SubOutputs"]
     },
     "Mining": {
-        "file": "src/data/Mining - Mine.xlsx",
+        "file": "src/data/Africa/Mining - Mine.xlsx",
         "sheets": ["Mining - Pivot Table", "Mining - SubOutputs"]
     },
     "IFF - Transnational_Crimes": {
-        "file": "src/data/IFF - Transnational _Crimes.xlsx",
+        "file": "src/data/Africa/IFF - Transnational _Crimes.xlsx",
         "sheets": ["IFF & Crime - Pivot Table", "IFF & Crime - SubOutputs"]
     },
 }

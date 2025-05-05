@@ -10,7 +10,7 @@ client = AzureOpenAI(
 )
 
 # Output directory
-os.makedirs(O1_OUTPUT_DIR, exist_ok=True)
+os.makedirs(GPT_OUTPUT_DIR_Africa, exist_ok=True)
 
 def analyze_theme(theme, config):
     print(f"\n🔍 Processing theme: {theme}")
@@ -37,7 +37,7 @@ def analyze_theme(theme, config):
         result = response.choices[0].message.content
 
         if result:
-            output_path = os.path.join(O1_OUTPUT_DIR, f"{theme}_Output.txt")
+            output_path = os.path.join(GPT_OUTPUT_DIR_Africa, f"{theme}_Output.txt")
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(result)
             print(f"✅ Output saved: {output_path}")
