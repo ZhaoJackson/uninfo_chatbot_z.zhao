@@ -37,7 +37,7 @@ def generate_funding_chart(theme):
         if not pivot_sheet:
             return None, None
 
-        df = xl.parse(pivot_sheet, header=2)  # Use third row as header (0-indexed)
+        df = xl.parse(pivot_sheet, header=2)
         df = df.dropna(subset=[df.columns[0]])
         df = df.dropna(axis=1, how='all')
 
