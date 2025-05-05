@@ -13,8 +13,8 @@ AZURE_OPENAI_ENDPOINT = st.secrets["AZURE_OPENAI_ENDPOINT"]
 AZURE_OPENAI_API_VERSION = st.secrets["AZURE_OPENAI_API_VERSION"]
 AZURE_OPENAI_DEPLOYMENT = st.secrets["AZURE_OPENAI_DEPLOYMENT"]
 
-# Output directory
-O1_OUTPUT_DIR = "src/o1_outputs"
+# Analyzer Output directory
+O1_OUTPUT_DIR = "src/outputs/4o_outputs"
 
 # Theme file configuration
 THEME_CONFIGS = {

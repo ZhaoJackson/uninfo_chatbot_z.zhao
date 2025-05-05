@@ -152,7 +152,7 @@ with tabs[0]:
             answer = response.choices[0].message.content.strip()
             st.session_state.chat_history.append(("user", user_query))
             st.session_state.chat_history.append(("assistant", answer))
-            st.session_state.chat_feedback.append(None)  # Placeholder for feedback
+            st.session_state.chat_feedback.append(None)
         except Exception as e:
             error_msg = f"Error: {e}"
             st.session_state.chat_history.append(("assistant", error_msg))
