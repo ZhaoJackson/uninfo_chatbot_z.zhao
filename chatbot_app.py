@@ -41,11 +41,16 @@ def generate_funding_chart(theme):
         df = df.dropna(subset=[df.columns[0]])
         df = df.dropna(axis=1, how='all')
 
+        # Rename the first column to "Country"
         if 'Row Labels' in df.columns:
             df.rename(columns={"Row Labels": "Country"}, inplace=True)
         else:
             df.columns.values[0] = "Country"
 
+        # Remove the 'Grand Total' row
+        df = df[~df["Country"].str.strip().str.lower().eq("grand total")]
+
+        # Locate funding columns
         req_col = next((c for c in df.columns if "required" in str(c).lower()), None)
         avail_col = next((c for c in df.columns if "available" in str(c).lower()), None)
         fund_col = next((c for c in df.columns if "funding" in str(c).lower()), None)
@@ -58,6 +63,7 @@ def generate_funding_chart(theme):
 
         df = df.dropna(subset=[req_col])
 
+        # Top 10 countries by required funding
         bar_fig = px.bar(
             df.sort_values(by=req_col, ascending=False).head(10),
             x="Country", y=req_col,
@@ -65,6 +71,7 @@ def generate_funding_chart(theme):
             labels={"Country": "Country", req_col: "Required Funding (USD)"}
         )
 
+        # Pie chart for totals
         values = [df[req_col].sum()]
         labels = ["2024 Required"]
         if avail_col:
