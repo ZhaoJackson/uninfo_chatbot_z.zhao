@@ -72,7 +72,7 @@ def generate_funding_chart(theme):
             labels.append("2024 Available")
         if fund_col:
             values.append(df[fund_col].sum())
-            labels.append("2024 Funding")
+            labels.append("2024 Funding Gap")
 
         pie_fig = px.pie(
             names=labels,

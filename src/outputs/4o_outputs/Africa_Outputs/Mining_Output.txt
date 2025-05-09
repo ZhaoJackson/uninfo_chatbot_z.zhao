@@ -1,22 +1,22 @@
-Below is a distilled view of four UN-supported “Mining” focus areas in Africa for 2024, drawing on both artisanal mining initiatives and mine-action (landmine) programs, followed by key challenges and gaps:
+Below is a concise overview of how “Mining” work appears across the 2024 UN Africa programming data, organized into four main areas of focus and followed by key challenges or gaps.
 
-────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────
 1) Formalization of Artisanal and Small-Scale Mining (ASMs)
-   • Theme: Economic Empowerment 
-   • Illustration: In Jos (Nigeria), support focuses on bringing ASMs into the legal framework, training local miners on better extraction practices, and promoting safer, more sustainable livelihoods.
+   • Theme: Economic Empowerment  
+   • Focus: Activities such as “Formalization of Artisanal and Small-Scale Miners (ASMs) in Jos” strengthen governance frameworks, help miners register and comply with regulations, and improve safety and income generation for local mining communities.
 
-2) Adoption of National Standards for Landmine Clearance
-   • Theme: Peace & Security 
-   • Illustration: Technical assistance is provided to develop consistent country-wide protocols for mine/ERW (explosive remnants of war) disposal, helping to reduce the threat of unexploded ordnance and foster more stable communities.
+2) Adoption of National Mine-Action Standards
+   • Theme: Peace and Security  
+   • Focus: Efforts like “Appuyer le développement et l’adoption de normes nationales pour la lutte antimines” promote uniform guidelines for demining, reduce the threat of unexploded ordnance, and protect communities in post-conflict areas.
 
-3) Strengthening Coordination Mechanisms for Mine-Action Working Groups
-   • Theme: Peace & Security 
-   • Illustration: Efforts include reinforcing inter-agency groups, improving data-sharing and strategic planning, and aligning resources so that mine-clearance campaigns and victim assistance can operate more effectively in conflict-affected regions.
+3) Strengthening Anti-Mine Coordination Mechanisms
+   • Theme: Peace and Security  
+   • Focus: Through actions such as “Renforcer les mécanismes de coordination à travers le groupe de travail lutte anti mine,” the UN supports inter-agency collaboration, ensures consistent demining approaches, and engages protection clusters to address landmines more effectively.
 
-4) Community-Level Mine Risk Education and Prevention
-   • Theme: Community Resilience & Public Safety 
-   • Illustration: Accredited organizations are training local leaders and volunteers to raise awareness of landmine risks, encourage safe behaviors, and build grassroots capacity to respond quickly when threats are identified.
+4) Community-Based Mine Risk Education
+   • Theme: Health & Safety  
+   • Focus: Initiatives (e.g., “Mettre en œuvre des activités de sensibilisation … pour l’adoption de comportements sûrs”) raise awareness about landmines, educate community members on staying safe in contaminated areas, and work to prevent accidents and injuries related to unexploded munitions.
 
-────────────────────────────────────────────────────────
-Potential Challenges/Gaps
-Limited resources and uneven technical capacity often mean only partial coverage for both artisanal mining oversight and mine-action interventions. Persistent security issues and bureaucratic hurdles slow down the pace of formalizing artisanal mining enterprises and clearing landmines. In many locations, community awareness and involvement remain insufficient because of weak local engagement strategies and competing development priorities.
+────────────────────────────────────────────────────────────────
+Potential Challenges or Gaps
+Insufficient technical and financial resources, along with limited inter-agency coordination, can slow the formalization of small-scale mining activities and hamper large-scale demining efforts. In some contexts, legal frameworks or mine-action standards are either outdated or not fully enforced. Finally, ongoing insecurity in certain regions makes it difficult to access all contaminated areas and to deliver consistent community-training and risk-education programs.
