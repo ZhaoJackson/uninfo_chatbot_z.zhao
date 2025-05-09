@@ -49,7 +49,7 @@ All model interactions happen within a **private, role-secured environment**, en
 ---
 
 ### 🗂 Project Structure
-
+```
 uninfo_chatbot_z.zhao/
 ├── chatbot_app.py                 # Streamlit app with chat interface & theme selection
 ├── llm_analyzer.py                # Batch processing and generation using LLM for each theme
@@ -69,7 +69,7 @@ uninfo_chatbot_z.zhao/
 │   ├── outputs/
 │   │   ├── 4o_outputs/            # LLM-generated insights (OpenAI o1 / Llama3)
 │   │   └── data_outputs/          # Intermediate data for validation and review
-
+```
 ---
 
 📬 Contact Us
