@@ -1,10 +1,13 @@
+# chatbot_app.py
+
 from src.commonconst import *
+from src.data_processing import *
 
 # ========== SHARED FUNCTIONS ==========
 
 @st.cache_data
 def load_model_output(theme):
-    filepath = os.path.join(O1_OUTPUT_DIR, f"{theme}_Output.txt")
+    filepath = os.path.join(GPT_OUTPUT_DIR_Africa, f"{theme}_Output.txt")
     if os.path.exists(filepath):
         with open(filepath, "r", encoding="utf-8") as f:
             return f.read()
@@ -91,23 +94,7 @@ def generate_funding_chart(theme):
     except Exception as e:
         return None, None
 
-def build_combined_prompt(theme, model_summary, data_snippet, user_question):
-    return f"""
-You are an AI assistant answering questions based on UN INFO 2024 programming data in Africa.
-
-Theme: {theme}
-
-Context from model analysis:
-{model_summary}
-
-Context from raw sub-output data:
-{data_snippet}
-
-Now answer the following question clearly and concisely:
-Q: {user_question}
-A:"""
-
-# Azure client
+# Azure OpenAI client
 client = AzureOpenAI(
     api_key=AZURE_OPENAI_API_KEY,
     api_version=AZURE_OPENAI_API_VERSION,
@@ -117,7 +104,7 @@ client = AzureOpenAI(
 # ========== STREAMLIT APP ==========
 
 st.set_page_config(page_title="UN INFO Chatbot", layout="wide")
-st.title("🇺🇳 United Nations Joint WorkPlans – Thematic Data Assistant")
+st.title("🇺🇳 United Nations Joint Work Plans – Thematic Data Assistant")
 
 tabs = st.tabs(["💬 Chatbot", "📊 Visual Insights", "📘 About"])
 
@@ -125,6 +112,7 @@ tabs = st.tabs(["💬 Chatbot", "📊 Visual Insights", "📘 About"])
 with tabs[0]:
     st.header("💬 Ask a Question")
 
+    # State Initialization
     if "previous_theme" not in st.session_state:
         st.session_state.previous_theme = None
     if "chat_history" not in st.session_state:
@@ -147,14 +135,37 @@ with tabs[0]:
         user_query = st.session_state.chat_input.strip()
         if not user_query:
             return
+
         model_output = load_model_output(selected_theme)
         data_snippet = summarize_excel_data(selected_theme)
-        prompt = build_combined_prompt(selected_theme, model_output, data_snippet, user_query)
+
+        # MCP integration: create scoped prompt with user role, theme, and data source
+        mcp = ModelContext(
+            user_role="UN Policy Analyst",
+            theme=selected_theme,
+            document_path=THEME_CONFIGS[selected_theme]["file"]
+        )
+        context_prompt = mcp.to_prompt_context()
+
+        full_prompt = f"""{context_prompt}
+
+Context from model analysis:
+{model_output}
+
+Context from raw sub-output data:
+{data_snippet}
+
+Now answer the following question clearly and concisely:
+Q: {user_query}
+A:"""
+
         try:
             response = client.chat.completions.create(
                 model=AZURE_OPENAI_DEPLOYMENT,
-                messages=[{"role": "system", "content": "You are a helpful assistant."},
-                          {"role": "user", "content": prompt}]
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": full_prompt}
+                ]
             )
             answer = response.choices[0].message.content.strip()
             st.session_state.chat_history.append(("user", user_query))
@@ -164,6 +175,7 @@ with tabs[0]:
             error_msg = f"Error: {e}"
             st.session_state.chat_history.append(("assistant", error_msg))
             st.session_state.chat_feedback.append(None)
+
         st.session_state.chat_input = ""
 
     # Display chat

@@ -1,22 +1,20 @@
-Below is a concise overview of how “Mining” work appears across the 2024 UN Africa programming data, organized into four main areas of focus and followed by key challenges or gaps.
+1) Four main areas of focus:
 
-────────────────────────────────────────────────────────────────
-1) Formalization of Artisanal and Small-Scale Mining (ASMs)
-   • Theme: Economic Empowerment  
-   • Focus: Activities such as “Formalization of Artisanal and Small-Scale Miners (ASMs) in Jos” strengthen governance frameworks, help miners register and comply with regulations, and improve safety and income generation for local mining communities.
+• Formalization of Artisanal and Small-Scale Miners (ASMs)  
+  – Theme: Economic Empowerment  
+  – Focus: Supporting ASMs in places like Jos to become more organized, regulated, and capable of operating within effective legal frameworks. This includes improving miners’ access to training, finance, and safer working conditions.
 
-2) Adoption of National Mine-Action Standards
-   • Theme: Peace and Security  
-   • Focus: Efforts like “Appuyer le développement et l’adoption de normes nationales pour la lutte antimines” promote uniform guidelines for demining, reduce the threat of unexploded ordnance, and protect communities in post-conflict areas.
+• Developing and Adopting National Mine Action Standards  
+  – Theme: Peace and Security  
+  – Focus: Helping governments establish clear guidelines and procedures for detecting and removing landmines and explosive remnants of war. Emphasis is on ensuring national systems meet international norms to protect communities.
 
-3) Strengthening Anti-Mine Coordination Mechanisms
-   • Theme: Peace and Security  
-   • Focus: Through actions such as “Renforcer les mécanismes de coordination à travers le groupe de travail lutte anti mine,” the UN supports inter-agency collaboration, ensures consistent demining approaches, and engages protection clusters to address landmines more effectively.
+• Community-Based Mine Risk Education  
+  – Theme: Protection and Awareness  
+  – Focus: Training accredited organizations to educate at-risk communities on safe behaviors around suspected mine areas. These efforts aim to reduce accidents by empowering local populations with the knowledge to avoid unexploded ordnance.
 
-4) Community-Based Mine Risk Education
-   • Theme: Health & Safety  
-   • Focus: Initiatives (e.g., “Mettre en œuvre des activités de sensibilisation … pour l’adoption de comportements sûrs”) raise awareness about landmines, educate community members on staying safe in contaminated areas, and work to prevent accidents and injuries related to unexploded munitions.
+• Coordination of Anti-Mine Working Groups  
+  – Theme: Humanitarian Coordination  
+  – Focus: Strengthening mechanisms—such as thematic working groups under Protection Clusters—to unify stakeholders and streamline mine clearance and victim support. The goal is to harmonize efforts across agencies and regions.
 
-────────────────────────────────────────────────────────────────
-Potential Challenges or Gaps
-Insufficient technical and financial resources, along with limited inter-agency coordination, can slow the formalization of small-scale mining activities and hamper large-scale demining efforts. In some contexts, legal frameworks or mine-action standards are either outdated or not fully enforced. Finally, ongoing insecurity in certain regions makes it difficult to access all contaminated areas and to deliver consistent community-training and risk-education programs.
+2) Potential Challenges/Gaps:
+While there is progress in formalizing small-scale mining and expanding demining initiatives, funding constraints and limited technical capacity can slow implementation. Coordination among various national and international partners often remains weak, risking overlap or gaps in mine action efforts. In addition, ongoing security issues in certain regions make it difficult to carry out risk education and clearance consistently.

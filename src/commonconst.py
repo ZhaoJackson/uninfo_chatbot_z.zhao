@@ -57,3 +57,19 @@ Please return:
 - A list of 4 main areas of focus, each with a theme label and 1–2 sentence illustration
 - 2–3 sentences summarizing key challenges/gaps
 """
+
+
+class ModelContext:
+    def __init__(self, user_role, theme, document_path, interaction_history=None):
+        self.user_role = user_role
+        self.theme = theme
+        self.document_path = document_path
+        self.interaction_history = interaction_history or []
+
+    def update_history(self, user_input, model_output):
+        self.interaction_history.append({"user": user_input, "model": model_output})
+
+    def to_prompt_context(self):
+        return f"""You are assisting a {self.user_role} exploring data on the theme of {self.theme}.
+        Refer to structured data from: {self.document_path}.
+        Keep answers concise, policy-relevant, and privacy-respecting."""
