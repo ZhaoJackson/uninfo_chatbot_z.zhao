@@ -1,10 +1,9 @@
-# src/commonconst.py
+# commonconst.py
 from openai import AzureOpenAI
 import streamlit as st
 import pandas as pd
 import re
 import os
-import streamlit as st
 import plotly.express as px
 
 # Azure OpenAI Credentials
@@ -12,30 +11,6 @@ AZURE_OPENAI_API_KEY = st.secrets["AZURE_OPENAI_API_KEY"]
 AZURE_OPENAI_ENDPOINT = st.secrets["AZURE_OPENAI_ENDPOINT"]
 AZURE_OPENAI_API_VERSION = st.secrets["AZURE_OPENAI_API_VERSION"]
 AZURE_OPENAI_DEPLOYMENT = st.secrets["AZURE_OPENAI_DEPLOYMENT"]
-
-# Directory paths
-DATA_BASE_PATH = "src/data"
-FUNDING_GAP_OUTPUT_BASE = "src/outputs/data_outputs/funding"
-
-# Year range for funding gap calculation
-FUNDING_GAP_YEARS = list(range(2016, 2025))
-
-# Default columns
-FUNDING_BASE_COLUMNS = ["Country"]
-
-
-# Path to save extracted progress reports
-PROGRESS_OUTPUT_BASE = "src/outputs/data_outputs/progress"
-
-# Columns to extract for progress overview
-PROGRESS_COLUMNS = [
-    "Country", "Plan name", "Strategic priority", "Outcome", "Output", "Sub-Output",
-    "SDG Targets", "SDG Goals", "QCPR function",
-    "Total required resources", "Total available resources", "Total expenditure resources",
-] + [f"{year} {metric}" for year in range(2016, 2029) for metric in ["Required", "Available", "Expenditure"]]
-
-# Output path for model-generated analyzer outputs
-ANALYZER_OUTPUT_BASE = "src/outputs/4o_outputs"
 
 # Directory paths
 DATA_BASE_PATH = "src/data"
@@ -50,7 +25,22 @@ PLOT_YEAR_RANGE = (2016, 2024)
 # Default columns
 FUNDING_BASE_COLUMNS = ["Country"]
 
+# Columns to extract for progress overview
+PROGRESS_COLUMNS = [
+    "Country", "Plan name", "Strategic priority", "Outcome", "Output", "Sub-Output",
+    "SDG Targets", "SDG Goals", "QCPR function",
+    "Total required resources", "Total available resources", "Total expenditure resources",
+] + [f"{year} {metric}" for year in range(2016, 2029) for metric in ["Required", "Available", "Expenditure"]]
 
+# User roles based on column relevance
+USER_ROLES = [
+    "Strategic Planner",
+    "Results-Based Manager",
+    "SDG Analyst",
+    "Resident Coordinator",
+    "Programme Officer",
+    "Policy Specialist"
+]
 
 Analyzer_PROMPT_TEMPLATE = """
 You are an AI assistant analyzing UN INFO Cooperation Framework (CF JWP) data from 2024.
@@ -69,7 +59,6 @@ Please return:
 - A list of 4 main areas of focus, each with a theme label and 1–2 sentence illustration
 - 2–3 sentences summarizing key challenges/gaps
 """
-
 
 class ModelContext:
     def __init__(self, user_role, theme, document_path, interaction_history=None):
