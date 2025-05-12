@@ -1,0 +1,16 @@
+1) Four main areas of focus (2024):
+
+• Digital Skills & Education (Theme: Education Access)  
+  Illustration: Strengthening teachers’ digital literacy for better online/blended learning and ensuring vulnerable children can access and benefit from digital education platforms.
+
+• Digital Governance & Public Services (Theme: Governance & Service Delivery)  
+  Illustration: Supporting governments to roll out e-services and digitize administrative processes, increasing service reach in remote areas and improving citizens’ trust through more efficient digital platforms.
+
+• Digital Economy & Entrepreneurship (Theme: Economic Empowerment)  
+  Illustration: Facilitating digital trade, promoting digital start-up ecosystems, and equipping marginalized groups with e-commerce skills to boost participation in fast-growing digital markets.
+
+• Digital Health & Social Services (Theme: Health Systems & Social Protection)  
+  Illustration: Developing digital health data exchange platforms for immunization tracking and supporting social services’ transition online, enhancing timely service delivery for at-risk communities.
+
+2) Key challenges/gaps:  
+Despite progress in building digital infrastructure and skills, insufficient connectivity and limited digital literacy still constrain broad usage. Data privacy and cybersecurity frameworks remain underdeveloped, and resource constraints often slow national digitalization plans, making it critical to mobilize robust partnerships and investments. Finally, coordination hurdles among multiple stakeholders can undermine the scalability and sustainability of digital initiatives.

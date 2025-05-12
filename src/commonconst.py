@@ -13,34 +13,46 @@ AZURE_OPENAI_ENDPOINT = st.secrets["AZURE_OPENAI_ENDPOINT"]
 AZURE_OPENAI_API_VERSION = st.secrets["AZURE_OPENAI_API_VERSION"]
 AZURE_OPENAI_DEPLOYMENT = st.secrets["AZURE_OPENAI_DEPLOYMENT"]
 
-# Analyzer Output directory
-GPT_OUTPUT_DIR_Africa = "src/outputs/4o_outputs/Africa_Outputs"
+# Directory paths
+DATA_BASE_PATH = "src/data"
+FUNDING_GAP_OUTPUT_BASE = "src/outputs/data_outputs/funding"
 
-# Theme file configuration
-THEME_CONFIGS = {
-    "Youth": {
-        "file": "src/data/Africa/Youth - jeunesse.xlsx",
-        "sheets": ["Youth - Pivot Table", "Youth - SubOutputs"]
-    },
-    "Digital": {
-        "file": "src/data/Africa/Digital - numérique.xlsx",
-        "sheets": ["Digital - Pivot Table", "Digital - SubOutputs"]
-    },
-    "Education": {
-        "file": "src/data/Africa/Education - éducation.xlsx",
-        "sheets": ["Education - Pivot Table", "Education - SubOutputs"]
-    },
-    "Mining": {
-        "file": "src/data/Africa/Mining - Mine.xlsx",
-        "sheets": ["Mining - Pivot Table", "Mining - SubOutputs"]
-    },
-    "IFF - Transnational_Crimes": {
-        "file": "src/data/Africa/IFF - Transnational _Crimes.xlsx",
-        "sheets": ["IFF & Crime - Pivot Table", "IFF & Crime - SubOutputs"]
-    },
-}
+# Year range for funding gap calculation
+FUNDING_GAP_YEARS = list(range(2016, 2025))
 
-O1_PROMPT_TEMPLATE = """
+# Default columns
+FUNDING_BASE_COLUMNS = ["Country"]
+
+
+# Path to save extracted progress reports
+PROGRESS_OUTPUT_BASE = "src/outputs/data_outputs/progress"
+
+# Columns to extract for progress overview
+PROGRESS_COLUMNS = [
+    "Country", "Plan name", "Strategic priority", "Outcome", "Output", "Sub-Output",
+    "SDG Targets", "SDG Goals", "QCPR function",
+    "Total required resources", "Total available resources", "Total expenditure resources",
+] + [f"{year} {metric}" for year in range(2016, 2029) for metric in ["Required", "Available", "Expenditure"]]
+
+# Output path for model-generated analyzer outputs
+ANALYZER_OUTPUT_BASE = "src/outputs/4o_outputs"
+
+# Directory paths
+DATA_BASE_PATH = "src/data"
+FUNDING_GAP_OUTPUT_BASE = "src/outputs/data_outputs/funding"
+PROGRESS_OUTPUT_BASE = "src/outputs/data_outputs/progress"
+ANALYZER_OUTPUT_BASE = "src/outputs/4o_outputs"
+
+# Year range for funding gap calculation
+FUNDING_GAP_YEARS = list(range(2016, 2025))
+PLOT_YEAR_RANGE = (2016, 2024)
+
+# Default columns
+FUNDING_BASE_COLUMNS = ["Country"]
+
+
+
+Analyzer_PROMPT_TEMPLATE = """
 You are an AI assistant analyzing UN INFO Cooperation Framework (CF JWP) data from 2024.
 
 Theme: {theme}
