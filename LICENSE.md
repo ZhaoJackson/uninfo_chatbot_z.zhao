@@ -1,13 +1,11 @@
-Creative Commons Attribution 4.0 International Public License (CC BY 4.0)
+Copyright (c) 2025 Zichen Zhao
 
-You are free to:
-- Share — copy and redistribute the material in any medium or format
-- Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+All rights reserved.
 
-Under the following terms:
-- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
-  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+Permission is hereby granted to any individual or organization to use the UN INFO Thematic Data Assistant hosted by the author for informational and research purposes, provided that the hosted application is accessed through authorized URLs only.
 
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+The source code, model prompts, and design of this application are proprietary and confidential. Redistribution, modification, reverse engineering, or any derivative use of the codebase is strictly prohibited without explicit written consent from the author.
 
-License details: https://creativecommons.org/licenses/by/4.0/
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+
+For inquiries, contact: ziche.zhao@un.org

@@ -109,6 +109,8 @@ A:"""
 
     st.text_input("Type your question and press Enter", key="chat_input", on_change=handle_input)
 
+    st.caption("© 2025 Zichen Zhao. All rights reserved. Use of this app is permitted via authorized access only. Redistribution or reuse of code is prohibited.")
+
 # --- TAB 2: VISUALS ---
 with tabs[1]:
     st.header("\U0001F4CA Funding Overview")
@@ -145,6 +147,7 @@ with tabs[1]:
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("No data to display.")
+    st.caption("© 2025 Zichen Zhao. All rights reserved. Use of this app is permitted via authorized access only. Redistribution or reuse of code is prohibited.")
 
 # --- TAB 3: PROGRESS TABLE ---
 with tabs[2]:
@@ -184,6 +187,7 @@ with tabs[2]:
         })
         bar_fig = px.bar(bar_data, x="Category", y="Amount (USD)", text="Amount (USD)", title=f"Resource Summary – {selected_country}")
         st.plotly_chart(bar_fig, use_container_width=True)
+    st.caption("© 2025 Zichen Zhao. All rights reserved. Use of this app is permitted via authorized access only. Redistribution or reuse of code is prohibited.")
 
 # --- TAB 4: ABOUT ---
 with tabs[3]:
@@ -202,3 +206,4 @@ with tabs[3]:
     **Email:** ziche.zhao@un.org  
     **Organization:** UN Development Coordination Office (UNDCO)
     """)
+    st.caption("© 2025 Zichen Zhao. All rights reserved. Use of this app is permitted via authorized access only. Redistribution or reuse of code is prohibited.")
