@@ -148,7 +148,7 @@ with tabs[1]:
 
 # --- TAB 3: PROGRESS TABLE ---
 with tabs[2]:
-    st.header("\U0001F4C8 Thematic Progress")
+    st.header("\U0001F4C8 Thematic Progress Table")
 
     region_options = sorted([
         d for d in os.listdir(PROGRESS_OUTPUT_BASE)
@@ -169,6 +169,21 @@ with tabs[2]:
 
     filtered_df = df[df["Country"] == selected_country]
     st.dataframe(filtered_df, use_container_width=True)
+
+    # Bar chart for total required/available/expenditure
+    st.subheader("Resource Overview for Selected Country")
+    if not filtered_df.empty:
+        totals = filtered_df[[
+            "Total required resources",
+            "Total available resources",
+            "Total expenditure resources"
+        ]].sum()
+        bar_data = pd.DataFrame({
+            "Category": totals.index,
+            "Amount (USD)": totals.values
+        })
+        bar_fig = px.bar(bar_data, x="Category", y="Amount (USD)", text="Amount (USD)", title=f"Resource Summary – {selected_country}")
+        st.plotly_chart(bar_fig, use_container_width=True)
 
 # --- TAB 4: ABOUT ---
 with tabs[3]:
