@@ -31,20 +31,28 @@ Please interpret:
 """
 
 # === Tab 3: Thematic Progress Table Prompt (Filtered Summary) ===
-def generate_progress_prompt(theme, selected_country, rows):
-    bullet_points = "\n".join(f"- {row}" for row in rows)
+
+def generate_progress_prompt(theme, country, df):
+    display_df = df.copy()
+    display_str = display_df.head(50).to_csv(index=False)
+
     return f"""
-You are summarizing the progress of the UN's work on the theme **{theme}** in **{selected_country}**.
+You are a UN development policy analyst reviewing progress in **{country}** for the theme **{theme}**.
 
-Based on the extracted sub-outputs below, answer:
-1. What are 3–4 key areas of focus in the country for this theme?
-2. Any gaps or areas needing improvement?
+Analyze the following structured table and answer:
+1. What are the major areas of support the UN is working on in this country under this theme?
+2. How well is the financial implementation (Required vs. Available vs. Expenditure from 2016–2028) aligned with these efforts?
+3. Does the data suggest that support is **on track**, **underfunded**, or **inefficient**?
 
-Sub-Output Entries:
-{bullet_points}
+Respond using evidence from the table below and give a reasoned assessment.
 
-Provide a structured summary and note any regional trends if visible.
+Data snapshot:
+Provide your output in:
+- Main Support Areas
+- Financial Performance
+- Overall Assessment
 """
+
 
 # === llm_analyzer Prompt (Batch Summarization for Output) ===
 def generate_analyzer_prompt(theme, df):

@@ -164,6 +164,27 @@ with tabs[2]:
     filtered_df = df[df["Country"] == selected_country]
     st.dataframe(filtered_df, use_container_width=True)
 
+    # Run 4o model to summarize filtered progress data
+    st.subheader("🔍 AI-Generated Financial Alignment Summary")
+
+    if not filtered_df.empty:
+        try:
+            # Generate the thematic-financial prompt
+            summary_prompt = generate_progress_prompt(selected_theme, selected_country, filtered_df)
+
+            # Call 4o
+            response = client.chat.completions.create(
+                model=AZURE_OPENAI_DEPLOYMENT,
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": summary_prompt}
+                ]
+            )
+            ai_summary = response.choices[0].message.content.strip()
+            st.markdown(ai_summary)
+        except Exception as e:
+            st.error(f"⚠️ AI summary generation failed: {e}")
+
     # Bar chart for total required/available/expenditure
     st.subheader("Resource Overview for Selected Country")
     if not filtered_df.empty:
