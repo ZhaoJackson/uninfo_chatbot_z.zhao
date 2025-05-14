@@ -1,5 +1,6 @@
 # llm_analyzer.py
 from src.commonconst import *
+from src.prompt import *
 
 # Initialize Azure client
 client = AzureOpenAI(
@@ -7,21 +8,6 @@ client = AzureOpenAI(
     api_version=AZURE_OPENAI_API_VERSION,
     azure_endpoint=AZURE_OPENAI_ENDPOINT,
 )
-
-def extract_sub_outputs_from_progress(file_path):
-    """Extract valid sub-output entries from the saved progress CSV."""
-    try:
-        df = pd.read_csv(file_path)
-        if "Sub-Output" in df.columns:
-            sub_outputs = df["Sub-Output"].dropna().astype(str)
-            return sub_outputs[sub_outputs.str.len() > 10].tolist()
-    except Exception as e:
-        print(f"⚠️ Failed to read or extract from {file_path}: {e}")
-    return []
-
-def build_analyzer_prompt(theme, sub_outputs):
-    bullets = "\n".join(f"- {item}" for item in sub_outputs[:50])
-    return Analyzer_PROMPT_TEMPLATE.format(theme=theme, bullets=bullets)
 
 def analyze_suboutput_progress():
     """Run analyzer over all regional progress CSVs and store to 4o_outputs."""
@@ -36,10 +22,11 @@ def analyze_suboutput_progress():
 
             theme = file.replace(".csv", "")
             file_path = os.path.join(region_path, file)
-            sub_outputs = extract_sub_outputs_from_progress(file_path)
 
-            if not sub_outputs:
-                print(f"⚠️ Skipping {file} – no valid sub-output entries found.")
+            try:
+                df = pd.read_csv(file_path)
+            except Exception as e:
+                print(f"❌ Failed to read {file_path}: {e}")
                 continue
 
             # Prepare prompt
@@ -48,9 +35,9 @@ def analyze_suboutput_progress():
                 theme=theme,
                 document_path=file_path
             )
-            full_prompt = mcp.to_prompt_context() + "\n\n" + build_analyzer_prompt(theme, sub_outputs)
+            context = mcp.to_prompt_context()
+            full_prompt = context + "\n\n" + generate_analyzer_prompt(theme, df)
 
-            # Run model
             try:
                 response = client.chat.completions.create(
                     model=AZURE_OPENAI_DEPLOYMENT,

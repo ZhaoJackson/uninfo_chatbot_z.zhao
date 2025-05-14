@@ -1,14 +1,28 @@
-1. Policy and Governance (e.g., “Youth Policy” and youth advisory councils)  
-   - UN support includes helping to draft or strengthen national youth policies, establish youth advisory councils, and expand civic/voter education. This ensures youth voices are included in decision-making and legislation.  
+### **Main Areas of Support**
+1. **Youth Employment and Skills Development**: Several outputs focus on increasing youth employment opportunities and enhancing access to technical and vocational education and training (TVET). Strategic priorities include reducing unemployment rates and equipping young people with job-relevant skills.
+2. **Youth Participation in Governance and Decision-Making**: Outcomes highlight fostering youth engagement in political processes and leadership roles, aligning with a focus on improving civic participation.
+3. **Health and Well-Being**: Sub-outputs emphasize better access to reproductive health services, mental health support, and addressing substance abuse among youth.
+4. **Sustainable Development Awareness and Action**: Initiatives aim to involve youth in climate action, environmental protection, and advocacy for sustainable practices, particularly in disaster-prone regions.
 
-2. Economic Empowerment and Skills Development (e.g., entrepreneurship, apprenticeships)  
-   - Efforts focus on creating pathways to employment and entrepreneurship—such as quality apprenticeship programs, market access in agriculture, and technical trainings—to boost youth livelihoods and reduce vulnerability.  
+---
 
-3. Health and Well-Being (e.g., SRH services, psychosocial support)  
-   - Initiatives target sexual and reproductive health education, mental health services, and robust youth-centered health programs, including surveys (GSHS, GYTS) that inform more responsive policies and practices.  
+### **Key Challenges**
+1. **Delivery Gaps**: Some outputs lack measurable progress, particularly in rural and marginalized communities, indicating gaps in implementation at the grassroots level.
+2. **Coordination Barriers**: Coordination across UN agencies and local governments shows inconsistencies, with overlapping roles in youth-focused programs leading to inefficiencies.
+3. **Policy Alignment Issues**: National policies in some countries are not fully harmonized with CF frameworks, hindering the uniform application of youth-focused interventions.
+4. **Resource Disparities**: Funding appears concentrated in a few countries, leaving others with minimal or incomplete program coverage.
 
-4. Peacebuilding and Conflict Resolution (e.g., preventing violence, reintegration support)  
-   - Programs emphasize youth engagement in peaceful dialogue, support for conflict-affected youth (including ex-offenders), and strengthening community-based solutions to address violence and social marginalization.
+---
 
-Challenges/Gaps:  
-Limited resources and uneven capacity-building hinder the scaling of successful youth programs. Coordination among stakeholders remains a concern, with overlapping mandates leading to gaps in coverage. Additionally, geographic and digital divides can limit vulnerable youths’ access to these initiatives.
+### **Financial Situation Summary**
+- **Trend**: Negative financial trend overall.
+- **Evidence**:
+  - Required funding between 2016–2028 shows a steady increase year-on-year, reflecting escalating needs across programs.
+  - Available funding and expenditures consistently fall short of required levels, with a widening gap noticeable after 2021. This trend signifies underfunding and potential resource mobilization challenges.
+  - Some countries exhibit very low expenditure rates, suggesting bottlenecks in fund utilization or allocation mechanics.
+- **Rationale**: The combination of rising requirements, declining financial performance, and unspent resources in some focus areas points to a negative trend.
+
+---
+
+### **Conclusion: Support Distribution**
+The UN’s support for youth is **substantive but unevenly distributed**. While thematic priorities are comprehensive, certain countries and regions remain underserved due to funding gaps and coordination barriers. Addressing implementation disparities and enhancing financial mobilization will improve overall program impact.

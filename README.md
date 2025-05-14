@@ -1,4 +1,4 @@
-# 🇺🇳 UN INFO 2024 Thematic Assistant
+# 🇺🇳 UN INFO Joint Work Plans - Thematic Assistant
 
 A secure, AI-driven assistant to explore programming insights from UN Cooperation Framework Joint Workplans (JWPs).
 
@@ -53,6 +53,7 @@ All model interactions happen within a **private, role-secured environment**, en
 uninfo_chatbot_z.zhao/
 ├── chatbot_app.py                 # Streamlit app with chat interface & theme selection
 ├── llm_analyzer.py                # Batch processing and generation using LLM for each theme
+├── data_processor.py              # data processing steps
 ├── requirements.txt               # Python dependencies
 ├── README.md                      # Project overview and usage instructions
 ├── LICENSE                        # Licensing information

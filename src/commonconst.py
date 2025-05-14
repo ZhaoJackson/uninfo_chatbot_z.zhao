@@ -5,6 +5,7 @@ import pandas as pd
 import re
 import os
 import plotly.express as px
+from io import StringIO
 
 # Azure OpenAI Credentials
 AZURE_OPENAI_API_KEY = st.secrets["AZURE_OPENAI_API_KEY"]
@@ -41,24 +42,6 @@ USER_ROLES = [
     "Programme Officer",
     "Policy Specialist"
 ]
-
-Analyzer_PROMPT_TEMPLATE = """
-You are an AI assistant analyzing UN INFO Cooperation Framework (CF JWP) data from 2024.
-
-Theme: {theme}
-
-Based on the following extracted sub-output entries from UN country programming in Africa, please answer:
-
-1. What are the 4 main areas of focus for {theme} in Africa where the UN is supporting (2024)? For each area, identify the main theme (e.g., Economic Empowerment, Education Access, Health Systems) and briefly illustrate the specific focus within that theme using 1–2 sentences.
-2. What are potential challenges or gaps in support?
-
-Data:
-{bullets}
-
-Please return:
-- A list of 4 main areas of focus, each with a theme label and 1–2 sentence illustration
-- 2–3 sentences summarizing key challenges/gaps
-"""
 
 class ModelContext:
     def __init__(self, user_role, theme, document_path, interaction_history=None):

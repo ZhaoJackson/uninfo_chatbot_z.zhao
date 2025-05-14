@@ -1,6 +1,7 @@
 # chatbot_app.py
 from src.commonconst import *
 from src.data_processing import *
+from src.prompt import *
 
 # ========== SHARED FUNCTIONS ==========
 @st.cache_data
@@ -10,20 +11,6 @@ def load_model_output(region, theme):
         with open(filepath, "r", encoding="utf-8") as f:
             return f.read()
     return "(No model output found for this theme.)"
-
-@st.cache_data
-def summarize_excel_data(region, theme):
-    filepath = os.path.join(PROGRESS_OUTPUT_BASE, region, f"{theme}.csv")
-    if not os.path.exists(filepath):
-        return "(No progress data found.)"
-    try:
-        df = pd.read_csv(filepath)
-        if "Sub-Output" in df.columns:
-            samples = df["Sub-Output"].dropna().astype(str).head(3).tolist()
-            return "\n--- Sub-Output Samples ---\n" + "\n".join(samples)
-        return "(No Sub-Output column found.)"
-    except Exception as e:
-        return f"Error reading data: {e}"
 
 # ========== STREAMLIT APP ==========
 st.set_page_config(page_title="UN INFO Chatbot", layout="wide")
@@ -59,15 +46,16 @@ with tabs[0]:
         st.session_state.chat_history = []
     if "chat_input" not in st.session_state:
         st.session_state.chat_input = ""
-
     def handle_input():
         user_query = st.session_state.chat_input.strip()
         if not user_query:
             return
 
         model_output = load_model_output(selected_region, selected_theme)
-        data_snippet = summarize_excel_data(selected_region, selected_theme)
+        df_path = os.path.join(PROGRESS_OUTPUT_BASE, selected_region, f"{selected_theme}.csv")
+        df = pd.read_csv(df_path)
 
+        # Missing initialization (must be added)
         mcp = ModelContext(
             user_role=selected_user_role,
             theme=selected_theme,
@@ -75,17 +63,7 @@ with tabs[0]:
         )
         context_prompt = mcp.to_prompt_context()
 
-        full_prompt = f"""{context_prompt}
-
-Context from model analysis:
-{model_output}
-
-Context from raw sub-output data:
-{data_snippet}
-
-Now answer the following question clearly and concisely:
-Q: {user_query}
-A:"""
+        full_prompt = generate_chatbot_prompt(context_prompt, model_output, df, user_query)
 
         try:
             response = client.chat.completions.create(
@@ -108,6 +86,19 @@ A:"""
         st.markdown(f"**{icon} {role.title()}:** {msg}")
 
     st.text_input("Type your question and press Enter", key="chat_input", on_change=handle_input)
+
+    if not st.session_state.chat_history:
+        with st.expander("Where to Get Data?"):
+            st.markdown(
+                """
+                The data is downloaded from [UN INFO](https://uninfo.org/data-explorer/cooperation-framework/activity-report), 
+                where you can access the data by selecting **"Search by Name/Code"** in Additional filters 
+                and download the CSV file to your local machine.
+
+                We integrate with the **OpenAI o1 & 4o model** to process the uploaded data, 
+                mainly to **summarize your queries intelligently**.
+                """
+            )
 
     st.caption("© 2025 Zichen Zhao. All rights reserved. Use of this app is permitted via authorized access only. Redistribution or reuse of code is prohibited.")
 
