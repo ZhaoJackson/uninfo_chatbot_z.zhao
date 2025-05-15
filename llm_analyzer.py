@@ -2,13 +2,6 @@
 from src.commonconst import *
 from src.prompt import *
 
-# Initialize Azure client
-client = AzureOpenAI(
-    api_key=AZURE_OPENAI_API_KEY,
-    api_version=AZURE_OPENAI_API_VERSION,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-)
-
 def analyze_suboutput_progress():
     """Run analyzer over all regional progress CSVs and store to 4o_outputs."""
     for region in os.listdir(PROGRESS_OUTPUT_BASE):
@@ -39,8 +32,8 @@ def analyze_suboutput_progress():
             full_prompt = context + "\n\n" + generate_analyzer_prompt(theme, df)
 
             try:
-                response = client.chat.completions.create(
-                    model=AZURE_OPENAI_DEPLOYMENT,
+                response = client_4o.chat.completions.create(
+                    model=DEPLOYMENT_4O,
                     messages=[
                         {"role": "system", "content": "You are a helpful assistant."},
                         {"role": "user", "content": full_prompt}

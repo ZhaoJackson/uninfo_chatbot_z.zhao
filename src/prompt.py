@@ -5,36 +5,53 @@ def generate_chatbot_prompt(context, model_output, df, user_query):
     display_df = df.copy()
     if "Country" in display_df.columns:
         display_df = display_df[display_df["Country"] != "Grand Total"]
-    display_str = display_df.head(50).to_csv(index=False)
+    display_str = display_df.head(20).to_csv(index=False)
 
     return f"""{context}
 
 Context from model analysis:
 {model_output}
 
-Context from structured programmatic data (sample rows shown):
-Now answer the following question clearly and concisely:
+Structured CSV data from {context.split('from: ')[-1].strip()}:
+{display_str}
+
+Now answer the question based on this data:
 Q: {user_query}
 A:"""
 
 # === Tab 2: Visual Insights Prompt (Funding Gaps) ===
-def generate_visual_prompt(theme, country=None):
+def generate_visual_prompt(region, theme_dfs):
+    prompt_sections = []
+    for theme, df in theme_dfs.items():
+        df = df[df["Country"] != "Grand Total"]
+        data_sample = df.head(20).to_csv(index=False)
+
+        section = f"""
+Theme: {theme}
+
+Please analyze:
+- Trends across Required, Available, and Expenditure (2016–2024)
+- Gaps or mismatches in funding
+- Final judgment: on track / at risk / underperforming
+
+Data:
+{data_sample}
+"""
+        prompt_sections.append(section)
+
     return f"""
-You are an expert UN data analyst using the OpenAI o1 model.
+You are a UN financial analyst evaluating funding performance in **{region}**.
 
-Generate a time-series insight from the funding data related to the theme: "{theme}"{f" in {country}" if country else ""}.
+Review each theme below and summarize findings clearly and concisely.
 
-Please interpret:
-- Required vs. Available vs. Expenditure trends (2016–2024)
-- Identify gaps or volatility over years
-- Summarize insights in 3–4 policy-relevant sentences
+{''.join(prompt_sections)}
 """
 
 # === Tab 3: Thematic Progress Table Prompt (Filtered Summary) ===
 
 def generate_progress_prompt(theme, country, df):
     display_df = df.copy()
-    display_str = display_df.head(50).to_csv(index=False)
+    display_str = display_df.head(20).to_csv(index=False)
 
     return f"""
 You are a UN development policy analyst reviewing progress in **{country}** for the theme **{theme}**.

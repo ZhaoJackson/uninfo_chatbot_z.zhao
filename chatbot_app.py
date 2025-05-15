@@ -4,6 +4,9 @@ from src.data_processing import *
 from src.prompt import *
 
 # ========== SHARED FUNCTIONS ==========
+if "active_tab" not in st.session_state:
+    st.session_state.active_tab = ""
+
 @st.cache_data
 def load_model_output(region, theme):
     filepath = os.path.join(ANALYZER_OUTPUT_BASE, region, f"{theme}_Output.txt")
@@ -22,17 +25,12 @@ with st.sidebar:
 
 tabs = st.tabs(["💬 Chatbot", "📊 Visual Insights", "📈 Thematic Progress", "📘 About"])
 
-# Azure OpenAI client
-client = AzureOpenAI(
-    api_key=AZURE_OPENAI_API_KEY,
-    api_version=AZURE_OPENAI_API_VERSION,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-)
-
 # --- TAB 1: CHATBOT ---
 with tabs[0]:
+    st.session_state.active_tab = "Chatbot"
     st.header("\U0001F4AC Ask a Question")
 
+    # Region and Theme selection
     region_options = sorted([
         d for d in os.listdir(ANALYZER_OUTPUT_BASE)
         if os.path.isdir(os.path.join(ANALYZER_OUTPUT_BASE, d))
@@ -42,10 +40,24 @@ with tabs[0]:
     theme_options = [f.replace("_Output.txt", "") for f in theme_files if f.endswith("_Output.txt")]
     selected_theme = st.selectbox("Choose a Theme", theme_options, key="chat_theme")
 
+    # === Reset chat when filters change ===
+    if "last_region" not in st.session_state:
+        st.session_state.last_region = selected_region
+    if "last_theme" not in st.session_state:
+        st.session_state.last_theme = selected_theme
+    if (selected_region != st.session_state.last_region or
+        selected_theme != st.session_state.last_theme):
+        st.session_state.chat_history = []
+        st.session_state.chat_input = ""
+        st.session_state.last_region = selected_region
+        st.session_state.last_theme = selected_theme
+
+    # === Initialize chat history ===
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
     if "chat_input" not in st.session_state:
         st.session_state.chat_input = ""
+
     def handle_input():
         user_query = st.session_state.chat_input.strip()
         if not user_query:
@@ -55,21 +67,23 @@ with tabs[0]:
         df_path = os.path.join(PROGRESS_OUTPUT_BASE, selected_region, f"{selected_theme}.csv")
         df = pd.read_csv(df_path)
 
-        # Missing initialization (must be added)
+        # Build prompt with ModelContext
         mcp = ModelContext(
             user_role=selected_user_role,
             theme=selected_theme,
             document_path=f"progress/{selected_region}/{selected_theme}.csv"
         )
         context_prompt = mcp.to_prompt_context()
-
         full_prompt = generate_chatbot_prompt(context_prompt, model_output, df, user_query)
 
         try:
-            response = client.chat.completions.create(
-                model=AZURE_OPENAI_DEPLOYMENT,
+            response = client_4o.chat.completions.create(
+                model=DEPLOYMENT_4O,
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
+                    {
+                        "role": "system",
+                        "content": "You are a UN data assistant with access to the full structured CSV below. Base your answers strictly on that data. Do not refer to file paths or say the file is inaccessible."
+                    },
                     {"role": "user", "content": full_prompt}
                 ]
             )
@@ -81,10 +95,12 @@ with tabs[0]:
 
         st.session_state.chat_input = ""
 
+    # Display history
     for role, msg in st.session_state.chat_history:
         icon = "\U0001F1FA\U0001F1F3" if role == "user" else "\U0001F916"
         st.markdown(f"**{icon} {role.title()}:** {msg}")
 
+    # Chat input
     st.text_input("Type your question and press Enter", key="chat_input", on_change=handle_input)
 
     if not st.session_state.chat_history:
@@ -95,7 +111,7 @@ with tabs[0]:
                 where you can access the data by selecting **"Search by Name/Code"** in Additional filters 
                 and download the CSV file to your local machine.
 
-                We integrate with the **OpenAI o1 & 4o model** to process the uploaded data, 
+                We integrate with the **OpenAI o1 & 4o models** to process the uploaded data, 
                 mainly to **summarize your queries intelligently**.
                 """
             )
@@ -138,6 +154,35 @@ with tabs[1]:
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("No data to display.")
+    
+    # --- AI Summary Section (o1 model) ---
+    st.subheader("🔍 Thematic Financial Summary")
+
+    if selected_themes:
+        if st.button("Get Insights", key="btn_tab2_insights"):
+            try:
+                theme_dfs = {}
+                for theme in selected_themes:
+                    path = os.path.join(FUNDING_GAP_OUTPUT_BASE, selected_region, f"{theme}_FundingGaps.csv")
+                    if os.path.exists(path):
+                        df_theme = pd.read_csv(path)
+                        theme_dfs[theme] = df_theme
+
+                summary_prompt = generate_visual_prompt(selected_region, theme_dfs)
+
+                response = client_o1.chat.completions.create(
+                    model=DEPLOYMENT_O1,
+                    messages=[
+                        {"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": summary_prompt}
+                    ]
+                )
+                summary_response = response.choices[0].message.content.strip()
+                st.markdown(summary_response)
+
+            except Exception as e:
+                st.error(f"⚠️ Failed to generate financial insight summary: {e}")
+        
     st.caption("© 2025 Zichen Zhao. All rights reserved. Use of this app is permitted via authorized access only. Redistribution or reuse of code is prohibited.")
 
 # --- TAB 3: PROGRESS TABLE ---
@@ -164,27 +209,6 @@ with tabs[2]:
     filtered_df = df[df["Country"] == selected_country]
     st.dataframe(filtered_df, use_container_width=True)
 
-    # Run 4o model to summarize filtered progress data
-    st.subheader("🔍 AI-Generated Financial Alignment Summary")
-
-    if not filtered_df.empty:
-        try:
-            # Generate the thematic-financial prompt
-            summary_prompt = generate_progress_prompt(selected_theme, selected_country, filtered_df)
-
-            # Call 4o
-            response = client.chat.completions.create(
-                model=AZURE_OPENAI_DEPLOYMENT,
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": summary_prompt}
-                ]
-            )
-            ai_summary = response.choices[0].message.content.strip()
-            st.markdown(ai_summary)
-        except Exception as e:
-            st.error(f"⚠️ AI summary generation failed: {e}")
-
     # Bar chart for total required/available/expenditure
     st.subheader("Resource Overview for Selected Country")
     if not filtered_df.empty:
@@ -199,6 +223,27 @@ with tabs[2]:
         })
         bar_fig = px.bar(bar_data, x="Category", y="Amount (USD)", text="Amount (USD)", title=f"Resource Summary – {selected_country}")
         st.plotly_chart(bar_fig, use_container_width=True)
+    
+    # Run o1 model to summarize filtered progress data
+    st.subheader("🔍 AI-Generated Financial Alignment Summary")
+
+    if not filtered_df.empty:
+        if st.button("Get Insights", key="btn_tab3_insights"):
+            try:
+                summary_prompt = generate_progress_prompt(selected_theme, selected_country, filtered_df)
+
+                response = client_o1.chat.completions.create(
+                    model=DEPLOYMENT_O1,
+                    messages=[
+                        {"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": summary_prompt}
+                    ]
+                )
+                ai_summary = response.choices[0].message.content.strip()
+                st.markdown(ai_summary)
+            except Exception as e:
+                st.error(f"⚠️ AI summary generation failed: {e}")
+
     st.caption("© 2025 Zichen Zhao. All rights reserved. Use of this app is permitted via authorized access only. Redistribution or reuse of code is prohibited.")
 
 # --- TAB 4: ABOUT ---

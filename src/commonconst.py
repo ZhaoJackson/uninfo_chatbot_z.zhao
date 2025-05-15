@@ -8,10 +8,21 @@ import plotly.express as px
 from io import StringIO
 
 # Azure OpenAI Credentials
-AZURE_OPENAI_API_KEY = st.secrets["AZURE_OPENAI_API_KEY"]
-AZURE_OPENAI_ENDPOINT = st.secrets["AZURE_OPENAI_ENDPOINT"]
-AZURE_OPENAI_API_VERSION = st.secrets["AZURE_OPENAI_API_VERSION"]
-AZURE_OPENAI_DEPLOYMENT = st.secrets["AZURE_OPENAI_DEPLOYMENT"]
+# 4o for Tab 1 + llm_analyzer
+client_4o = AzureOpenAI(
+    api_key=st.secrets["AZURE_OPENAI_4O_API_KEY"],
+    api_version=st.secrets["AZURE_OPENAI_4O_API_VERSION"],
+    azure_endpoint=st.secrets["AZURE_OPENAI_4O_ENDPOINT"]
+)
+DEPLOYMENT_4O = st.secrets["AZURE_OPENAI_4O_DEPLOYMENT"]
+
+# o1 for Tab 2 + Tab 3
+client_o1 = AzureOpenAI(
+    api_key=st.secrets["AZURE_OPENAI_O1_API_KEY"],
+    api_version=st.secrets["AZURE_OPENAI_O1_API_VERSION"],
+    azure_endpoint=st.secrets["AZURE_OPENAI_O1_ENDPOINT"]
+)
+DEPLOYMENT_O1 = st.secrets["AZURE_OPENAI_O1_DEPLOYMENT"]
 
 # Directory paths
 DATA_BASE_PATH = "src/data"
