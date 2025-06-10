@@ -6,6 +6,7 @@ import re
 import os
 import plotly.express as px
 from io import StringIO
+from xgboost import XGBRegressor
 
 # Azure OpenAI Credentials
 # 4o for Tab 1 + llm_analyzer
@@ -53,6 +54,17 @@ USER_ROLES = [
     "Programme Officer",
     "Policy Specialist"
 ]
+
+# === Modeling for Funding Analysis ===
+
+# Root directory containing all regional funding CSVs
+FUNDING_DATA_DIR = "src/outputs/progress"
+
+# Years to use for historical training
+TRAIN_YEARS = list(range(2016, 2025))
+FORECAST_YEAR = 2026
+FUNDING_VARS = ["Required", "Available", "Expenditure"]
+
 
 class ModelContext:
     def __init__(self, user_role, theme, document_path, interaction_history=None):

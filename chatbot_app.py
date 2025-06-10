@@ -2,6 +2,7 @@
 from src.commonconst import *
 from src.data_processing import *
 from src.prompt import *
+from modeling.regression import *
 
 # ========== SHARED FUNCTIONS ==========
 if "active_tab" not in st.session_state:
@@ -189,12 +190,14 @@ with tabs[1]:
 with tabs[2]:
     st.header("\U0001F4C8 Thematic Progress Table")
 
+    # Region Selector
     region_options = sorted([
         d for d in os.listdir(PROGRESS_OUTPUT_BASE)
         if os.path.isdir(os.path.join(PROGRESS_OUTPUT_BASE, d))
     ])
     selected_region = st.selectbox("Region", region_options, key="region_progress")
 
+    # Theme Selector
     theme_files = [
         f for f in os.listdir(os.path.join(PROGRESS_OUTPUT_BASE, selected_region))
         if f.endswith(".csv") and os.path.isfile(os.path.join(PROGRESS_OUTPUT_BASE, selected_region, f))
@@ -202,14 +205,16 @@ with tabs[2]:
     theme_options = sorted([f.replace(".csv", "") for f in theme_files])
     selected_theme = st.selectbox("Theme", theme_options, key="theme_progress")
 
+    # Country Selector
     df = pd.read_csv(os.path.join(PROGRESS_OUTPUT_BASE, selected_region, f"{selected_theme}.csv"))
     country_options = sorted(df["Country"].dropna().unique())
     selected_country = st.selectbox("Country", country_options)
 
+    # Filtered DataFrame for selected country
     filtered_df = df[df["Country"] == selected_country]
     st.dataframe(filtered_df, use_container_width=True)
 
-    # Bar chart for total required/available/expenditure
+    # Bar Chart Summary
     st.subheader("Resource Overview for Selected Country")
     if not filtered_df.empty:
         totals = filtered_df[[
@@ -221,17 +226,33 @@ with tabs[2]:
             "Category": totals.index,
             "Amount (USD)": totals.values
         })
-        bar_fig = px.bar(bar_data, x="Category", y="Amount (USD)", text="Amount (USD)", title=f"Resource Summary – {selected_country}")
+        bar_fig = px.bar(
+            bar_data,
+            x="Category",
+            y="Amount (USD)",
+            text="Amount (USD)",
+            title=f"Resource Summary – {selected_country}"
+        )
         st.plotly_chart(bar_fig, use_container_width=True)
-    
-    # Run o1 model to summarize filtered progress data
-    st.subheader("🔍 AI-Generated Financial Alignment Summary")
 
+    # Forecast Future Funding
+    st.subheader("Predicted Funding Resources (2026)")
+
+    result = predict_funding_for_country(filtered_df)
+
+    if isinstance(result, str):
+        st.info(result)
+    elif result is not None and not result.empty:
+        st.dataframe(result, use_container_width=True)
+    else:
+        st.warning("Prediction failed unexpectedly.")
+
+    # AI-Generated Summary
+    st.subheader("🔍 AI-Generated Financial Alignment Summary")
     if not filtered_df.empty:
         if st.button("Get Insights", key="btn_tab3_insights"):
             try:
                 summary_prompt = generate_progress_prompt(selected_theme, selected_country, filtered_df)
-
                 response = client_o1.chat.completions.create(
                     model=DEPLOYMENT_O1,
                     messages=[
