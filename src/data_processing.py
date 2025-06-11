@@ -75,12 +75,12 @@ def generate_progress_snapshots(base_data_path=DATA_BASE_PATH, output_base=PROGR
 
             except Exception as e:
                 print(f"❌ Failed progress extraction for {file_path}: {e}")
-def apply_refined_funding_imputation(base_data_path=DATA_BASE_PATH, seed=42):
+
+def apply_funding_imputation(base_data_path=DATA_BASE_PATH, seed=42):
     """
-    Applies refined imputation to all Excel files to simulate variation:
-    Required ≥ Available ≥ Expenditure using realistic random decomposition.
+    Applies refined funding imputation with cluster-based variation:
+    Required ≥ Available ≥ Expenditure within Country + Strategic Priority groups.
     """
-    
     np.random.seed(seed)
 
     for region in os.listdir(base_data_path):
@@ -96,22 +96,43 @@ def apply_refined_funding_imputation(base_data_path=DATA_BASE_PATH, seed=42):
             try:
                 df = pd.read_excel(file_path)
 
+                if 'Country' not in df.columns or 'Strategic priority' not in df.columns:
+                    print(f"⚠️ Missing clustering features in {file_path}, skipping.")
+                    continue
+
                 for year in range(2016, 2029):
                     req_col = f"{year} Required"
                     avail_col = f"{year} Available"
                     exp_col = f"{year} Expenditure"
 
-                    if req_col in df.columns:
-                        for i in range(len(df)):
-                            required = df.at[i, req_col]
+                    if req_col not in df.columns:
+                        continue
+                    
+                    # Cluster-based imputation with category grouping
+                    grouped = df.groupby(['Country', 'Strategic priority'])
+                    for (country, priority), group in grouped:
+
+                        # Randomized Ratio Generation with Reproducible Seeding
+                        base_avail_ratio = np.random.uniform(0.7, 0.9)
+                        base_exp_ratio = np.random.uniform(0.7, 0.9)
+
+                        for idx in group.index:
+                            required = df.at[idx, req_col]
                             if pd.isna(required) or required == 0:
                                 continue
 
-                            available_ratio = np.random.uniform(0.6, 0.95)
-                            expenditure_ratio = np.random.uniform(0.6, 0.95)
+                            noise_avail = np.random.normal(0, 0.05)
+                            noise_exp = np.random.normal(0, 0.05)
 
-                            df.at[i, avail_col] = round(required * available_ratio, 2)
-                            df.at[i, exp_col] = round(df.at[i, avail_col] * expenditure_ratio, 2)
+                            avail_ratio = max(0.4, min(0.95, base_avail_ratio + noise_avail))
+                            exp_ratio = max(0.4, min(0.95, base_exp_ratio + noise_exp))
+
+                            # Proportional decomposition of Required into Available and Expenditure
+                            available = required * avail_ratio
+                            expenditure = available * exp_ratio
+
+                            df.at[idx, avail_col] = round(available, 2)
+                            df.at[idx, exp_col] = round(expenditure, 2)
 
                 df.to_excel(file_path, index=False)
 
