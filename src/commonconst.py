@@ -1,6 +1,7 @@
 # commonconst.py
 from openai import AzureOpenAI
 import numpy as np
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import re
@@ -31,6 +32,8 @@ DATA_BASE_PATH = "src/data"
 FUNDING_GAP_OUTPUT_BASE = "src/outputs/data_outputs/funding"
 PROGRESS_OUTPUT_BASE = "src/outputs/data_outputs/progress"
 ANALYZER_OUTPUT_BASE = "src/outputs/4o_outputs"
+IMPUTED_OUTPUT_BASE = "src/outputs/data_outputs/imput"
+OUTPUT_PATH = "src/outputs/data_outputs/merge/merged_progress.csv"
 
 # Year range for funding gap calculation
 FUNDING_GAP_YEARS = list(range(2016, 2025))

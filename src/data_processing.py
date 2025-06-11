@@ -1,6 +1,5 @@
 # src/data_processing.py
 from src.commonconst import *
-from src.prompt import *
 
 def generate_funding_gap_csvs(base_data_path=DATA_BASE_PATH, output_base=FUNDING_GAP_OUTPUT_BASE):
     """Processes all theme Excel files by region and saves funding gap CSVs with Grand Total row."""
@@ -76,28 +75,32 @@ def generate_progress_snapshots(base_data_path=DATA_BASE_PATH, output_base=PROGR
             except Exception as e:
                 print(f"❌ Failed progress extraction for {file_path}: {e}")
 
-def apply_funding_imputation(base_data_path=DATA_BASE_PATH, seed=42):
+
+# src/data_processing.py
+
+def apply_funding_imputation(base_data_path=DATA_BASE_PATH, output_base_path=IMPUTED_OUTPUT_BASE, seed=42):
     """
     Applies refined funding imputation with cluster-based variation:
     Required ≥ Available ≥ Expenditure within Country + Strategic Priority groups.
+    Outputs updated Excel files to: src/outputs/data_outputs/imput/{Region}/
     """
     np.random.seed(seed)
 
     for region in os.listdir(base_data_path):
-        region_path = os.path.join(base_data_path, region)
-        if not os.path.isdir(region_path):
+        region_path = Path(base_data_path) / region
+        if not region_path.is_dir():
             continue
 
         for file in os.listdir(region_path):
             if not file.endswith(".xlsx"):
                 continue
 
-            file_path = os.path.join(region_path, file)
+            input_file_path = region_path / file
             try:
-                df = pd.read_excel(file_path)
+                df = pd.read_excel(input_file_path)
 
                 if 'Country' not in df.columns or 'Strategic priority' not in df.columns:
-                    print(f"⚠️ Missing clustering features in {file_path}, skipping.")
+                    print(f"⚠️ Missing clustering features in {input_file_path}, skipping.")
                     continue
 
                 for year in range(2016, 2029):
@@ -107,12 +110,9 @@ def apply_funding_imputation(base_data_path=DATA_BASE_PATH, seed=42):
 
                     if req_col not in df.columns:
                         continue
-                    
-                    # Cluster-based imputation with category grouping
+
                     grouped = df.groupby(['Country', 'Strategic priority'])
                     for (country, priority), group in grouped:
-
-                        # Randomized Ratio Generation with Reproducible Seeding
                         base_avail_ratio = np.random.uniform(0.7, 0.9)
                         base_exp_ratio = np.random.uniform(0.7, 0.9)
 
@@ -127,14 +127,55 @@ def apply_funding_imputation(base_data_path=DATA_BASE_PATH, seed=42):
                             avail_ratio = max(0.4, min(0.95, base_avail_ratio + noise_avail))
                             exp_ratio = max(0.4, min(0.95, base_exp_ratio + noise_exp))
 
-                            # Proportional decomposition of Required into Available and Expenditure
                             available = required * avail_ratio
                             expenditure = available * exp_ratio
 
                             df.at[idx, avail_col] = round(available, 2)
                             df.at[idx, exp_col] = round(expenditure, 2)
 
-                df.to_excel(file_path, index=False)
+                region_output_path = Path(output_base_path) / region
+                os.makedirs(region_output_path, exist_ok=True)
+
+                output_file_path = region_output_path / file
+                df.to_excel(output_file_path, index=False)
+                print(f"💾 Imputed data saved to: {output_file_path}")
 
             except Exception as e:
+                print(f"❌ Error processing {input_file_path}: {e}")
+
+def merge_all_progress_data(progress_base_path=PROGRESS_OUTPUT_BASE, output_path=OUTPUT_PATH):
+    """
+    Merges all regional and thematic progress CSVs into one master dataset with 'Region' and 'Theme' columns.
+    Appends those columns immediately after 'Country'.
+    """
+    merged_dfs = []
+
+    for region in os.listdir(progress_base_path):
+        region_path = os.path.join(progress_base_path, region)
+        if not os.path.isdir(region_path):
+            continue
+
+        for file in os.listdir(region_path):
+            if not file.endswith(".csv"):
+                continue
+
+            theme = file.replace(".csv", "")
+            file_path = os.path.join(region_path, file)
+
+            try:
+                df = pd.read_csv(file_path)
+
+                df.insert(1, "Region", region)
+                df.insert(2, "Theme", theme)
+
+                merged_dfs.append(df)
+            except Exception as e:
                 print(f"❌ Error processing {file_path}: {e}")
+
+    if merged_dfs:
+        master_df = pd.concat(merged_dfs, ignore_index=True)
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        master_df.to_csv(output_path, index=False)
+        print(f"✅ Merged progress data saved to: {output_path}")
+    else:
+        print("⚠️ No progress data found to merge.")
