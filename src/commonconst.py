@@ -1,5 +1,6 @@
 # commonconst.py
 from openai import AzureOpenAI
+import numpy as np
 import streamlit as st
 import pandas as pd
 import re

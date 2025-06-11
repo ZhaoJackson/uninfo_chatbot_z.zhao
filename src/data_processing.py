@@ -75,3 +75,45 @@ def generate_progress_snapshots(base_data_path=DATA_BASE_PATH, output_base=PROGR
 
             except Exception as e:
                 print(f"❌ Failed progress extraction for {file_path}: {e}")
+def apply_refined_funding_imputation(base_data_path=DATA_BASE_PATH, seed=42):
+    """
+    Applies refined imputation to all Excel files to simulate variation:
+    Required ≥ Available ≥ Expenditure using realistic random decomposition.
+    """
+    
+    np.random.seed(seed)
+
+    for region in os.listdir(base_data_path):
+        region_path = os.path.join(base_data_path, region)
+        if not os.path.isdir(region_path):
+            continue
+
+        for file in os.listdir(region_path):
+            if not file.endswith(".xlsx"):
+                continue
+
+            file_path = os.path.join(region_path, file)
+            try:
+                df = pd.read_excel(file_path)
+
+                for year in range(2016, 2029):
+                    req_col = f"{year} Required"
+                    avail_col = f"{year} Available"
+                    exp_col = f"{year} Expenditure"
+
+                    if req_col in df.columns:
+                        for i in range(len(df)):
+                            required = df.at[i, req_col]
+                            if pd.isna(required) or required == 0:
+                                continue
+
+                            available_ratio = np.random.uniform(0.6, 0.95)
+                            expenditure_ratio = np.random.uniform(0.6, 0.95)
+
+                            df.at[i, avail_col] = round(required * available_ratio, 2)
+                            df.at[i, exp_col] = round(df.at[i, avail_col] * expenditure_ratio, 2)
+
+                df.to_excel(file_path, index=False)
+
+            except Exception as e:
+                print(f"❌ Error processing {file_path}: {e}")
